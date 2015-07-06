@@ -1,13 +1,22 @@
 ﻿namespace SquishIt.Framework.Invalidation
 {
+    using System.IO;
+
     public class DefaultCacheInvalidationStrategy : ICacheInvalidationStrategy
     {
         public string GetOutputFileLocation(string outputFile, string hash)
         {
-            if (outputFile.Contains("#"))
+            var fileName = Path.GetFileName(outputFile);
+
+            if (fileName != null && fileName.Contains("#"))
             {
-                return outputFile.Replace("#", hash);
+                var outputFileWithHashValue = fileName.Replace("#", hash);
+                var directory = Path.GetDirectoryName(outputFile);
+                outputFileWithHashValue = directory == null ? outputFileWithHashValue : Path.Combine(directory, outputFileWithHashValue);
+
+                return outputFileWithHashValue;
             }
+
             return outputFile;
         }
 
