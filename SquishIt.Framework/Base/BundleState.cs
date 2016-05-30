@@ -10,7 +10,7 @@ namespace SquishIt.Framework.Base
     {
         internal List<Asset> Assets = new List<Asset>();
         internal Dictionary<string, string> Attributes = new Dictionary<string, string>();
-        
+
         internal HashSet<string> AllowedExtensions = new HashSet<string>();
         internal IList<IPreprocessor> Preprocessors = new List<IPreprocessor>();
         internal List<string> DependentFiles = new List<string>();
@@ -30,7 +30,7 @@ namespace SquishIt.Framework.Base
         internal Func<bool> DebugPredicate { get; set; }
 
         internal BundleState()
-        { 
+        {
         }
 
         internal BundleState(Dictionary<string, string> attributes)

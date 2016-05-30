@@ -91,7 +91,7 @@ namespace SquishIt.Framework
         {
             if(Preprocessors.Any(p => p.GetType() == typeof(T)))
             {
-                throw new InvalidOperationException(string.Format("Can't add multiple preprocessors of type: {0}", typeof(T).FullName));
+                throw new InvalidOperationException(string.Format("Can't add multiple preprocessors of type: {0}", typeof(T).AssemblyQualifiedName));
             }
 
             foreach(var extension in instance.Extensions)

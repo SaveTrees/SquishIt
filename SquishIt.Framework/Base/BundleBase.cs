@@ -40,7 +40,7 @@ namespace SquishIt.Framework.Base
         protected IDebugStatusReader debugStatusReader;
         protected IDirectoryWrapper directoryWrapper;
         protected IHasher hasher;
-        protected IPathTranslator pathTranslator = Configuration.Instance.DefaultPathTranslator();
+        public IPathTranslator PathTranslator = Configuration.Instance.DefaultPathTranslator();
 
         IMinifier<T> minifier;
 
@@ -245,7 +245,7 @@ namespace SquishIt.Framework.Base
         /// <param name="siteRelativePath">Site-relative path to content (eg "signalr/hubs").</param>
         public T AddDynamic(string siteRelativePath)
         {
-            var absolutePath = pathTranslator.BuildAbsolutePath(siteRelativePath);
+            var absolutePath = PathTranslator.BuildAbsolutePath(siteRelativePath);
             return AddRemote(siteRelativePath, absolutePath, true);
         }
 

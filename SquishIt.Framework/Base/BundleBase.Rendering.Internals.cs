@@ -14,7 +14,7 @@ namespace SquishIt.Framework.Base
     {
         IEnumerable<string> GetFiles(IEnumerable<Asset> assets)
         {
-            var inputFiles = assets.Select(a => Input.FromAsset(a, pathTranslator, IsDebuggingEnabled));
+            var inputFiles = assets.Select(a => Input.FromAsset(a, PathTranslator, IsDebuggingEnabled));
             var resolvedFilePaths = new List<string>();
 
             foreach (Input input in inputFiles)
@@ -27,7 +27,7 @@ namespace SquishIt.Framework.Base
 
         protected IEnumerable<string> GetFilesForSingleAsset(Asset asset)
         {
-            var inputFile = Input.FromAsset(asset, pathTranslator, IsDebuggingEnabled);
+            var inputFile = Input.FromAsset(asset, PathTranslator, IsDebuggingEnabled);
             return inputFile.Resolve(allowedExtensions, disallowedExtensions, debugExtension);
         }
 
@@ -52,7 +52,7 @@ namespace SquishIt.Framework.Base
         protected string PreprocessArbitrary(Asset asset)
         {
             if (!asset.IsArbitrary) throw new InvalidOperationException("PreprocessArbitrary can only be called on Arbitrary assets.");
-            
+
             var filename = "dummy." + (asset.Extension ?? defaultExtension);
             var preprocessors = FindPreprocessors(filename);
             return asset.ArbitraryWorkingDirectory != null ?
@@ -177,7 +177,7 @@ namespace SquishIt.Framework.Base
                 }
                 else
                 {
-                    var inputFile = Input.FromAsset(asset, pathTranslator, IsDebuggingEnabled);
+                    var inputFile = Input.FromAsset(asset, PathTranslator, IsDebuggingEnabled);
                     var files = inputFile.Resolve(allowedExtensions, disallowedExtensions, debugExtension);
 
                     if (asset.IsEmbeddedResource)
@@ -191,7 +191,7 @@ namespace SquishIt.Framework.Base
 
                         var processedFile = ExpandAppRelativePath(asset.LocalPath);
                         //embedded resources need to be rendered regardless to be usable
-                        renderer.Render(tsb.ToString(), pathTranslator.ResolveAppRelativePathToFileSystem(processedFile));
+                        renderer.Render(tsb.ToString(), PathTranslator.ResolveAppRelativePathToFileSystem(processedFile));
                         sb.AppendLine(FillTemplate(bundleState, processedFile));
                     }
                     else if (asset.RemotePath != null)
@@ -204,7 +204,7 @@ namespace SquishIt.Framework.Base
                         {
                             if (!renderedFiles.Contains(file))
                             {
-                                var fileBase = pathTranslator.ResolveAppRelativePathToFileSystem(asset.LocalPath);
+                                var fileBase = PathTranslator.ResolveAppRelativePathToFileSystem(asset.LocalPath);
                                 var newPath = PreprocessForDebugging(file).Replace(fileBase, "");
                                 var path = ExpandAppRelativePath(asset.LocalPath + newPath.Replace("\\", "/"));
                                 sb.AppendLine(FillTemplate(bundleState, path));
@@ -266,7 +266,7 @@ namespace SquishIt.Framework.Base
                             renderPathCache[CachePrefix + "." + key] = renderTo;
                         }
 
-                        var outputFile = pathTranslator.ResolveAppRelativePathToFileSystem(renderTo);
+                        var outputFile = PathTranslator.ResolveAppRelativePathToFileSystem(renderTo);
                         var renderToPath = ExpandAppRelativePath(renderTo);
 
                         if (!String.IsNullOrEmpty(BaseOutputHref))
